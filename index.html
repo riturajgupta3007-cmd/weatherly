@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#f7f3e8">
+
+  <title>Weatherly — Smart Weather</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-two"></div>
+
+  <!-- HEADER -->
+  <header class="topbar container">
+
+    <a href="#" class="brand">
+
+      <span class="brand-mark">
+        <span></span>
+      </span>
+
+      <span>
+        <strong>Weatherly</strong>
+        <small>Smart weather intelligence</small>
+      </span>
+
+    </a>
+
+
+    <div class="top-actions">
+
+      <button
+        id="locationBtn"
+        class="ghost-btn"
+        type="button"
+      >
+        <span>⌖</span>
+        My Location
+      </button>
+
+
+      <button
+        id="themeBtn"
+        class="icon-btn"
+        type="button"
+        title="Night Mode"
+        aria-label="Switch to night mode"
+      >
+        ☾
+      </button>
+
+
+      <button
+        id="refreshBtn"
+        class="icon-btn"
+        type="button"
+        title="Refresh"
+        aria-label="Refresh weather"
+      >
+        ↻
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <main class="container">
+
+    <!-- SEARCH -->
+    <section class="search-row">
+
+      <form id="searchForm" class="search-box">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+          id="cityInput"
+          type="search"
+          placeholder="Search any city or location..."
+          autocomplete="off"
+        >
+
+        <button type="submit">
+          Search
+        </button>
+
+      </form>
+
+      <div
+        id="searchResults"
+        class="search-results hidden"
+      ></div>
+
+    </section>
+
+
+    <!-- STATUS -->
+    <div
+      id="statusBar"
+      class="status-bar"
+    >
+      <span class="status-dot"></span>
+
+      <span id="statusText">
+        Loading weather...
+      </span>
+    </div>
+
+
+    <!-- CURRENT WEATHER -->
+    <section class="hero-card">
+
+      <div class="hero-top">
+
+        <div>
+
+          <div class="eyebrow">
+            CURRENT LOCATION
+          </div>
+
+          <h1 id="placeName">
+            Gorakhpur, India
+          </h1>
+
+          <p id="placeMeta">
+            Uttar Pradesh
+          </p>
+
+        </div>
+
+
+        <div class="live-pill">
+
+          <span></span>
+
+          <b id="liveText">
+            Live
+          </b>
+
+          ·
+
+          <span id="timezoneText">
+            Local time
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-main">
+
+        <div
+          id="weatherArt"
+          class="weather-art"
+        ></div>
+
+
+        <div class="temperature-block">
+
+          <div class="temperature">
+
+            <span id="temperature">
+              --
+            </span>
+
+            <sup>°</sup>
+
+          </div>
+
+
+          <h2 id="condition">
+            Loading...
+          </h2>
+
+
+          <p>
+            Feels like
+            <b id="feelsLike">
+              --°
+            </b>
+          </p>
+
+        </div>
+
+
+        <div class="quick-metrics">
+
+          <div class="mini-metric">
+
+            <span>♨</span>
+
+            <div>
+
+              <small>
+                Pressure
+              </small>
+
+              <b id="pressure">
+                -- hPa
+              </b>
+
+            </div>
+
+          </div>
+
+
+          <div class="mini-metric">
+
+            <span>➤</span>
+
+            <div>
+
+              <small>
+                Wind direction
+              </small>
+
+              <b id="windDir">
+                --
+              </b>
+
+            </div>
+
+          </div>
+
+
+          <div class="mini-metric">
+
+            <span>◉</span>
+
+            <div>
+
+              <small>
+                Rain chance
+              </small>
+
+              <b id="rainChance">
+                --%
+              </b>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SUN TRACK -->
+      <div class="sun-track">
+
+        <div class="sun-label">
+
+          <small>
+            Sunrise
+          </small>
+
+          <b id="sunrise">
+            --:--
+          </b>
+
+        </div>
+
+
+        <div class="track">
+
+          <span id="sunProgress"></span>
+
+          <i id="sunDot"></i>
+
+        </div>
+
+
+        <div class="sun-label right">
+
+          <small>
+            Sunset
+          </small>
+
+          <b id="sunset">
+            --:--
+          </b>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WEATHER DETAILS -->
+    <section class="metric-grid">
+
+      <article class="metric-card">
+
+        <span class="metric-icon blue">
+          💧
+        </span>
+
+        <div>
+
+          <small>
+            Humidity
+          </small>
+
+          <b id="humidity">
+            --%
+          </b>
+
+        </div>
+
+      </article>
+
+
+      <article class="metric-card">
+
+        <span class="metric-icon purple">
+          ≋
+        </span>
+
+        <div>
+
+          <small>
+            Wind
+          </small>
+
+          <b id="wind">
+            -- km/h
+          </b>
+
+        </div>
+
+      </article>
+
+
+      <article class="metric-card">
+
+        <span class="metric-icon violet">
+          ◉
+        </span>
+
+        <div>
+
+          <small>
+            Visibility
+          </small>
+
+          <b id="visibility">
+            -- km
+          </b>
+
+        </div>
+
+      </article>
+
+
+      <article class="metric-card">
+
+        <span class="metric-icon yellow">
+          ☼
+        </span>
+
+        <div>
+
+          <small>
+            UV Index
+          </small>
+
+          <b id="uv">
+            --
+          </b>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ASSISTANT + ADVICE -->
+    <section class="section-grid">
+
+
+      <!-- WEATHERLY ASSISTANT -->
+      <article class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              WEATHERLY ASSISTANT
+            </span>
+
+            <h2>
+              Ask about your weather
+            </h2>
+
+          </div>
+
+          <span class="ai-badge">
+            Smart
+          </span>
+
+        </div>
+
+
+        <div
+          id="chatBox"
+          class="chat-box"
+        >
+
+          <div class="chat-message bot">
+
+            <div class="avatar">
+              W
+            </div>
+
+            <div>
+
+              <p>
+                Hi! Ask me things like
+                <b>
+                  “Can I play cricket at 5 PM?”
+                </b>
+                or
+                <b>
+                  “Should I carry an umbrella?”
+                </b>
+              </p>
+
+              <small>
+                Now
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-prompts">
+
+          <button
+            type="button"
+            data-question="Can I play cricket at 5 PM?"
+          >
+            🏏 Cricket at 5 PM
+          </button>
+
+          <button
+            type="button"
+            data-question="Should I carry an umbrella?"
+          >
+            ☂ Umbrella?
+          </button>
+
+          <button
+            type="button"
+            data-question="Is it good for running today?"
+          >
+            🏃 Running today?
+          </button>
+
+          <button
+            type="button"
+            data-question="What should I wear today?"
+          >
+            👕 What to wear?
+          </button>
+
+        </div>
+
+
+        <form
+          id="chatForm"
+          class="chat-input"
+        >
+
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="Ask a weather question..."
+            autocomplete="off"
+          >
+
+          <button type="submit">
+            Send
+          </button>
+
+        </form>
+
+
+        <p class="disclaimer">
+          Weatherly Assistant uses live weather data to give practical weather guidance.
+        </p>
+
+      </article>
+
+
+      <!-- SMART ADVICE -->
+      <article class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              SMART WEATHER ADVICE
+            </span>
+
+            <h2 id="adviceTitle">
+              Today's conditions
+            </h2>
+
+          </div>
+
+          <span
+            id="adviceIcon"
+            class="advice-icon"
+          >
+            ✦
+          </span>
+
+        </div>
+
+
+        <div
+          id="adviceList"
+          class="advice-list"
+        ></div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ACTIVITY PLANNER -->
+    <section class="panel">
+
+      <div class="panel-heading">
+
+        <div>
+
+          <span class="section-kicker">
+            ACTIVITY PLANNER
+          </span>
+
+          <h2>
+            How suitable is today?
+          </h2>
+
+        </div>
+
+        <span class="small-note">
+          Based on weather conditions
+        </span>
+
+      </div>
+
+
+      <div class="activity-grid">
+
+
+        <article class="activity-card">
+
+          <div class="activity-head">
+
+            <span>🏏</span>
+
+            <b>Cricket</b>
+
+            <strong id="cricketScore">
+              --%
+            </strong>
+
+          </div>
+
+          <div class="score-bar">
+            <i id="cricketBar"></i>
+          </div>
+
+          <p id="cricketText">
+            Calculating...
+          </p>
+
+        </article>
+
+
+        <article class="activity-card">
+
+          <div class="activity-head">
+
+            <span>🏃</span>
+
+            <b>Running</b>
+
+            <strong id="runningScore">
+              --%
+            </strong>
+
+          </div>
+
+          <div class="score-bar">
+            <i id="runningBar"></i>
+          </div>
+
+          <p id="runningText">
+            Calculating...
+          </p>
+
+        </article>
+
+
+        <article class="activity-card">
+
+          <div class="activity-head">
+
+            <span>🚴</span>
+
+            <b>Cycling</b>
+
+            <strong id="cyclingScore">
+              --%
+            </strong>
+
+          </div>
+
+          <div class="score-bar">
+            <i id="cyclingBar"></i>
+          </div>
+
+          <p id="cyclingText">
+            Calculating...
+          </p>
+
+        </article>
+
+
+        <article class="activity-card">
+
+          <div class="activity-head">
+
+            <span>🚶</span>
+
+            <b>Walking</b>
+
+            <strong id="walkingScore">
+              --%
+            </strong>
+
+          </div>
+
+          <div class="score-bar">
+            <i id="walkingBar"></i>
+          </div>
+
+          <p id="walkingText">
+            Calculating...
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- SMART WEATHER ALERTS -->
+<section class="panel smart-alert-panel">
+
+  <div class="panel-heading">
+    <div>
+      <span class="section-kicker">
+        SMART ALERTS
+      </span>
+
+      <h2>
+        Weather you should know about
+      </h2>
+    </div>
+
+    <span class="small-note">
+      Live forecast analysis
+    </span>
+  </div>
+
+  <div id="smartAlerts" class="smart-alerts">
+    <div class="smart-alert loading-alert">
+      <span class="smart-alert-icon">⏳</span>
+
+      <div>
+        <b>Analyzing weather...</b>
+
+        <p>
+          Checking the upcoming forecast.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- BEST TIME RECOMMENDATION -->
+<section class="panel best-time-panel">
+
+  <div class="panel-heading">
+    <div>
+      <span class="section-kicker">
+        SMART RECOMMENDATION
+      </span>
+
+      <h2>
+        Best time to go out
+      </h2>
+    </div>
+
+    <span class="small-note">
+      Based on the next 24 hours
+    </span>
+  </div>
+
+  <div id="bestTimeGrid" class="best-time-grid">
+
+    <!-- Cricket -->
+    <article class="best-time-card">
+      <div class="best-time-head">
+        <div class="best-time-icon">🏏</div>
+
+        <div>
+          <span class="best-time-label">
+            Cricket
+          </span>
+
+          <strong id="cricketBestTime">
+            Finding best time...
+          </strong>
+        </div>
+      </div>
+
+      <div class="best-time-details">
+        <span id="cricketBestTemp">🌡️ --°C</span>
+        <span id="cricketBestRain">🌧️ --%</span>
+        <span id="cricketBestWind">💨 -- km/h</span>
+      </div>
+
+      <p id="cricketBestText">
+        Analyzing the forecast...
+      </p>
+    </article>
+
+
+    <!-- Running -->
+    <article class="best-time-card">
+      <div class="best-time-head">
+        <div class="best-time-icon">🏃</div>
+
+        <div>
+          <span class="best-time-label">
+            Running
+          </span>
+
+          <strong id="runningBestTime">
+            Finding best time...
+          </strong>
+        </div>
+      </div>
+
+      <div class="best-time-details">
+        <span id="runningBestTemp">🌡️ --°C</span>
+        <span id="runningBestRain">🌧️ --%</span>
+        <span id="runningBestWind">💨 -- km/h</span>
+      </div>
+
+      <p id="runningBestText">
+        Analyzing the forecast...
+      </p>
+    </article>
+
+
+    <!-- Cycling -->
+    <article class="best-time-card">
+      <div class="best-time-head">
+        <div class="best-time-icon">🚴</div>
+
+        <div>
+          <span class="best-time-label">
+            Cycling
+          </span>
+
+          <strong id="cyclingBestTime">
+            Finding best time...
+          </strong>
+        </div>
+      </div>
+
+      <div class="best-time-details">
+        <span id="cyclingBestTemp">🌡️ --°C</span>
+        <span id="cyclingBestRain">🌧️ --%</span>
+        <span id="cyclingBestWind">💨 -- km/h</span>
+      </div>
+
+      <p id="cyclingBestText">
+        Analyzing the forecast...
+      </p>
+    </article>
+
+
+    <!-- Walking -->
+    <article class="best-time-card">
+      <div class="best-time-head">
+        <div class="best-time-icon">🚶</div>
+
+        <div>
+          <span class="best-time-label">
+            Walking
+          </span>
+
+          <strong id="walkingBestTime">
+            Finding best time...
+          </strong>
+        </div>
+      </div>
+
+      <div class="best-time-details">
+        <span id="walkingBestTemp">🌡️ --°C</span>
+        <span id="walkingBestRain">🌧️ --%</span>
+        <span id="walkingBestWind">💨 -- km/h</span>
+      </div>
+
+      <p id="walkingBestText">
+        Analyzing the forecast...
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+    <!-- HOURLY FORECAST -->
+    <section class="panel">
+
+      <div class="panel-heading">
+
+        <div>
+
+          <span class="section-kicker">
+            HOURLY FORECAST
+          </span>
+
+          <h2>
+            Next 24 hours
+          </h2>
+
+        </div>
+
+        <span
+          id="hourlyZone"
+          class="small-note"
+        >
+          Local time
+        </span>
+
+      </div>
+
+
+      <div
+        id="hourlyList"
+        class="hourly-list"
+      ></div>
+
+    </section>
+
+
+    <!-- 7 DAY FORECAST -->
+    <section class="panel">
+
+      <div class="panel-heading">
+
+        <div>
+
+          <span class="section-kicker">
+            7-DAY FORECAST
+          </span>
+
+          <h2>
+            Plan your week
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="dailyList"
+        class="daily-list"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <footer class="footer container">
+
+    <div>
+      <b>Weatherly</b>
+      · Smart weather intelligence
+    </div>
+
+    <div>
+      Weather data by Open-Meteo
+    </div>
+
+  </footer>
+
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
