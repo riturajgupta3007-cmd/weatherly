@@ -2267,3 +2267,909 @@ body.dark .smart-alert {
   }
 
 }
+/* =====================================================
+   WEATHER CELESTIAL FIX
+   Sun/Moon stays visible behind weather
+   ===================================================== */
+
+.weather-scene{
+  position:relative;
+  width:150px;
+  height:150px;
+  display:grid;
+  place-items:center;
+  overflow:visible;
+}
+
+.weather-scene .celestial-body{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:1;
+}
+
+.weather-scene .weather-cloud{
+  position:absolute;
+  right:-5px;
+  bottom:35px;
+  transform:scale(.65);
+  z-index:3;
+}
+
+.weather-scene .weather-rain{
+  z-index:4;
+}
+
+.weather-scene .weather-snow{
+  z-index:4;
+}
+
+.weather-scene .weather-sun{
+  z-index:1;
+}
+
+.weather-scene .weather-moon{
+  z-index:1;
+}
+
+/* Make clouds slightly translucent so
+   sun/moon remains visually present */
+.weather-scene .weather-cloud{
+  opacity:.94;
+}
+
+/* Night cloud */
+body.dark .weather-scene .weather-cloud{
+  opacity:.90;
+}
+/* =====================================================
+   WEATHERLY ASSISTANT — CHAT LAYOUT FIX
+   ===================================================== */
+
+.chat-box{
+  width:100%;
+  height:130px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding-right:6px;
+}
+
+.chat-message{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  width:100%;
+  max-width:100%;
+  margin-bottom:11px;
+}
+
+.chat-message > div:last-child{
+  flex:1 1 auto;
+  min-width:0;
+  max-width:calc(100% - 38px);
+  box-sizing:border-box;
+  overflow:hidden;
+}
+
+.chat-message p{
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0;
+  font-size:10px;
+  line-height:1.55;
+  white-space:normal;
+  word-break:normal;
+  overflow-wrap:break-word;
+}
+
+.chat-message small{
+  display:block;
+  margin-top:5px;
+  font-size:7px;
+}
+
+.chat-message.user{
+  width:100%;
+  max-width:100%;
+}
+
+.chat-message.user > div:last-child{
+  min-width:0;
+}
+
+/* Better readability on larger screens */
+@media(min-width:651px){
+  .chat-message p{
+    font-size:10.5px;
+    line-height:1.6;
+  }
+}
+/* =====================================================
+   WEATHERLY ASSISTANT — FINAL CHAT FIX
+   ===================================================== */
+
+.chat-box {
+  width: 100%;
+  height: 130px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  box-sizing: border-box;
+}
+
+/* Each complete message row */
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+
+  width: 100%;
+  max-width: 100%;
+
+  margin-bottom: 11px;
+  box-sizing: border-box;
+}
+
+/* Avatar */
+.chat-message .avatar {
+  flex: 0 0 29px;
+
+  width: 29px;
+  height: 29px;
+
+  border-radius: 10px;
+
+  display: grid;
+  place-items: center;
+
+  background: linear-gradient(
+    135deg,
+    #648dff,
+    #7564e9
+  );
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  box-sizing: border-box;
+}
+
+/* User avatar */
+.chat-message.user .avatar {
+  background: #25314a;
+}
+
+/* Actual message bubble */
+.chat-bubble {
+  flex: 1 1 auto;
+
+  min-width: 0;
+  width: auto;
+
+  max-width: calc(100% - 38px);
+
+  padding: 9px 11px;
+
+  border-radius: 13px;
+
+  background: rgba(246, 248, 252, .9);
+  border: 1px solid var(--line);
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+/* User bubble */
+.chat-message.user .chat-bubble {
+  background: #eaf0ff;
+}
+
+/* Message text */
+.chat-bubble p {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+
+  margin: 0;
+
+  font-size: 10px;
+  line-height: 1.55;
+
+  white-space: normal;
+
+  word-break: normal;
+  overflow-wrap: break-word;
+
+  box-sizing: border-box;
+}
+
+/* Assistant bold text */
+.chat-bubble p b {
+  font-weight: 800;
+}
+
+/* Timestamp */
+.chat-bubble small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #9aa4b4;
+
+  font-size: 7px;
+  line-height: 1.2;
+}
+
+/* User messages on the right */
+.chat-message.user {
+  flex-direction: row-reverse;
+  margin-left: 0;
+}
+
+/* Desktop */
+@media (min-width: 651px) {
+
+  .chat-bubble p {
+    font-size: 10.5px;
+    line-height: 1.6;
+  }
+
+}
+/* =====================================================
+   WEATHERLY 3D WEATHER ART
+   Animated Sun / Moon + Cloud Occlusion
+   ===================================================== */
+
+
+/* -----------------------------------------------------
+   MAIN WEATHER SCENE
+   ----------------------------------------------------- */
+
+.weather-scene{
+  position:relative;
+
+  width:150px;
+  height:150px;
+
+  display:grid;
+  place-items:center;
+
+  overflow:visible;
+
+  perspective:500px;
+}
+
+
+/* -----------------------------------------------------
+   SUN / MOON BASE POSITION
+   ----------------------------------------------------- */
+
+.weather-scene .celestial-body{
+  position:absolute;
+
+  left:39%;
+  top:38%;
+
+  transform:translate(-50%, -50%);
+
+  z-index:1;
+
+  transition:
+    transform .8s ease,
+    opacity .8s ease;
+}
+
+
+/* =====================================================
+   3D SUN
+   ===================================================== */
+
+.weather-sun{
+  width:88px;
+  height:88px;
+
+  border-radius:50%;
+
+  position:absolute;
+
+  transform-style:preserve-3d;
+
+  animation:
+    sunFloat 4s ease-in-out infinite,
+    sunGlow 2.8s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 0 12px rgba(255,193,47,.55))
+    drop-shadow(0 0 28px rgba(255,174,42,.28));
+}
+
+
+/* Actual 3D glowing sun */
+
+.sun-core{
+  position:absolute;
+
+  inset:0;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #fffde2 0%,
+      #fff5a3 16%,
+      #ffe45c 42%,
+      #ffbd32 72%,
+      #ef8d16 100%
+    );
+
+  box-shadow:
+
+    inset -10px -12px 18px rgba(191,91,0,.28),
+
+    inset 8px 8px 16px rgba(255,255,255,.62),
+
+    0 0 18px rgba(255,193,47,.55),
+
+    0 0 40px rgba(255,172,39,.30);
+
+  transform:translateZ(8px);
+}
+
+
+/* 3D highlight on Sun */
+
+.sun-core::before{
+  content:"";
+
+  position:absolute;
+
+  width:27px;
+  height:16px;
+
+  left:17px;
+  top:13px;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.85),
+      rgba(255,255,255,0)
+    );
+
+  transform:
+    rotate(-25deg);
+
+  filter:blur(.5px);
+}
+
+
+/* Small sun depth shadow */
+
+.sun-core::after{
+  content:"";
+
+  position:absolute;
+
+  width:70%;
+  height:70%;
+
+  right:-3px;
+  bottom:-3px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      transparent 45%,
+      rgba(173,76,0,.12) 100%
+    );
+
+  pointer-events:none;
+}
+
+
+/* Rotating rays */
+
+.sun-rays{
+  position:absolute;
+
+  width:112px;
+  height:112px;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:50%;
+
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(255,197,55,.75) 0deg 4deg,
+      transparent 4deg 20deg
+    );
+
+  -webkit-mask:
+    radial-gradient(
+      circle,
+      transparent 0 51%,
+      #000 53% 100%
+    );
+
+  mask:
+    radial-gradient(
+      circle,
+      transparent 0 51%,
+      #000 53% 100%
+    );
+
+  animation:
+    sunRotate 16s linear infinite;
+}
+
+
+/* Sun animation */
+
+@keyframes sunRotate{
+  from{
+    transform:
+      translate(-50%,-50%)
+      rotate(0deg);
+  }
+
+  to{
+    transform:
+      translate(-50%,-50%)
+      rotate(360deg);
+  }
+}
+
+
+@keyframes sunFloat{
+
+  0%,100%{
+    transform:
+      translate(-50%,-50%)
+      translateY(0)
+      scale(1);
+  }
+
+  50%{
+    transform:
+      translate(-50%,-50%)
+      translateY(-4px)
+      scale(1.025);
+  }
+}
+
+
+@keyframes sunGlow{
+
+  0%,100%{
+    filter:
+      drop-shadow(0 0 12px rgba(255,193,47,.55))
+      drop-shadow(0 0 28px rgba(255,174,42,.28));
+  }
+
+  50%{
+    filter:
+      drop-shadow(0 0 18px rgba(255,193,47,.72))
+      drop-shadow(0 0 38px rgba(255,174,42,.38));
+  }
+}
+
+
+/* =====================================================
+   3D MOON
+   ===================================================== */
+
+.weather-moon{
+  width:78px;
+  height:78px;
+
+  position:absolute;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      #fffdf0 0%,
+      #f8f0c9 38%,
+      #ddd3a5 70%,
+      #b7ac7d 100%
+    );
+
+  box-shadow:
+
+    inset -12px -9px 17px rgba(63,58,38,.28),
+
+    inset 8px 8px 14px rgba(255,255,255,.65),
+
+    0 0 20px rgba(255,246,193,.40),
+
+    0 0 42px rgba(255,239,170,.18);
+
+  transform-style:preserve-3d;
+
+  animation:
+    moonFloat 5s ease-in-out infinite,
+    moonGlow 3.5s ease-in-out infinite;
+
+  overflow:hidden;
+}
+
+
+/* Moon surface */
+
+.moon-surface{
+  position:absolute;
+
+  inset:0;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 70% 65%,
+      rgba(95,88,61,.16),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 35% 65%,
+      rgba(95,88,61,.12),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      circle at 55% 25%,
+      rgba(255,255,255,.35),
+      transparent 32%
+    );
+
+  pointer-events:none;
+}
+
+
+/* Moon craters */
+
+.moon-crater{
+  position:absolute;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,255,255,.20),
+      rgba(110,103,74,.22)
+    );
+
+  box-shadow:
+    inset 2px 2px 4px rgba(77,70,47,.18);
+}
+
+
+.crater-one{
+  width:15px;
+  height:15px;
+
+  left:18px;
+  top:25px;
+}
+
+
+.crater-two{
+  width:10px;
+  height:10px;
+
+  left:43px;
+  top:49px;
+}
+
+
+.crater-three{
+  width:8px;
+  height:8px;
+
+  left:53px;
+  top:19px;
+}
+
+
+@keyframes moonFloat{
+
+  0%,100%{
+    transform:
+      translate(-50%,-50%)
+      translateY(0)
+      rotate(-2deg);
+  }
+
+  50%{
+    transform:
+      translate(-50%,-50%)
+      translateY(-4px)
+      rotate(2deg);
+  }
+}
+
+
+@keyframes moonGlow{
+
+  0%,100%{
+    filter:
+      drop-shadow(0 0 12px rgba(255,246,193,.38));
+  }
+
+  50%{
+    filter:
+      drop-shadow(0 0 22px rgba(255,246,193,.58));
+  }
+}
+
+
+/* =====================================================
+   CLOUD — ALWAYS IN FRONT OF SUN/MOON
+   ===================================================== */
+
+.weather-scene .weather-cloud{
+  position:absolute;
+
+  right:-5px;
+  bottom:34px;
+
+  width:135px;
+  height:70px;
+
+  transform:
+    scale(.65);
+
+  z-index:3;
+
+  animation:
+    cloudFloat 5s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 7px 8px rgba(52,68,92,.10));
+}
+
+
+/* Cloud body */
+
+.weather-scene .weather-cloud::before,
+.weather-scene .weather-cloud::after{
+
+  content:"";
+
+  position:absolute;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f9fcff 0%,
+      #dfe8f3 48%,
+      #b9c8da 100%
+    );
+
+  border-radius:50%;
+}
+
+
+/* Large cloud */
+
+.weather-scene .weather-cloud::before{
+
+  width:72px;
+  height:72px;
+
+  left:28px;
+  top:0;
+
+  box-shadow:
+    inset 8px 8px 10px rgba(255,255,255,.65),
+    inset -8px -8px 12px rgba(102,120,144,.16);
+}
+
+
+/* Cloud base */
+
+.weather-scene .weather-cloud::after{
+
+  width:100px;
+  height:50px;
+
+  left:0;
+  bottom:0;
+
+  border-radius:40px;
+
+  box-shadow:
+    inset 7px 7px 10px rgba(255,255,255,.55),
+    inset -8px -7px 12px rgba(91,110,135,.14);
+}
+
+
+/* Cloud shadow */
+
+.weather-scene .cloud-shadow{
+
+  position:absolute;
+
+  width:102px;
+  height:13px;
+
+  left:16px;
+  bottom:-10px;
+
+  border-radius:50%;
+
+  background:
+    rgba(64,83,110,.14);
+
+  filter:blur(3px);
+}
+
+
+@keyframes cloudFloat{
+
+  0%,100%{
+    transform:
+      scale(.65)
+      translateX(0);
+  }
+
+  50%{
+    transform:
+      scale(.65)
+      translateX(5px);
+  }
+}
+
+
+/* =====================================================
+   RAIN
+   ===================================================== */
+
+.weather-rain{
+  position:absolute;
+
+  bottom:12px;
+
+  display:flex;
+
+  gap:11px;
+
+  z-index:4;
+}
+
+
+.weather-rain i{
+
+  width:3px;
+  height:18px;
+
+  border-radius:5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #a8caff,
+      #5790ff
+    );
+
+  transform:
+    rotate(18deg);
+
+  box-shadow:
+    0 0 5px rgba(92,145,255,.30);
+
+  animation:
+    rainDrop .8s linear infinite;
+}
+
+
+.weather-rain i:nth-child(2){
+  animation-delay:.2s;
+}
+
+
+.weather-rain i:nth-child(3){
+  animation-delay:.4s;
+}
+
+
+@keyframes rainDrop{
+
+  0%{
+    transform:
+      translateY(-7px)
+      rotate(18deg);
+
+    opacity:0;
+  }
+
+  30%{
+    opacity:1;
+  }
+
+  100%{
+    transform:
+      translateY(10px)
+      rotate(18deg);
+
+    opacity:.25;
+  }
+}
+
+
+/* =====================================================
+   DARK MODE
+   ===================================================== */
+
+body.dark .weather-scene .weather-cloud::before,
+body.dark .weather-scene .weather-cloud::after{
+
+  background:
+    linear-gradient(
+      145deg,
+      #c7d2e1 0%,
+      #91a2b8 48%,
+      #66778f 100%
+    );
+
+}
+
+
+body.dark .weather-scene .cloud-shadow{
+
+  background:
+    rgba(0,0,0,.28);
+
+}
+
+
+body.dark .weather-moon{
+
+  background:
+    radial-gradient(
+      circle at 30% 28%,
+      #fffef1 0%,
+      #f5edc7 38%,
+      #d2c797 72%,
+      #a89d70 100%
+    );
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce){
+
+  .weather-sun,
+  .sun-rays,
+  .weather-moon,
+  .weather-scene .weather-cloud,
+  .weather-rain i{
+
+    animation:none !important;
+
+  }
+
+}

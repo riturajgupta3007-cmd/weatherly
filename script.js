@@ -444,88 +444,121 @@ function createSunSVG() {
    WEATHER VISUAL
    ===================================================== */
 
-function weatherVisual(type, isDay) {
+function weatherVisual(type, isDay){
 
-  if (type === "clear" && !isDay) {
-    return createMoonSVG();
-  }
+  /*
+    Weather visual logic
 
-  if (type === "clear" && isDay) {
-    return createSunSVG();
-  }
+    Day   -> 3D animated Sun
+    Night -> 3D animated Moon
 
-  if (type === "partly") {
-    return `
-      <div class="weather-scene">
-        ${createSunSVG()}
+    Clouds always stay in front of
+    Sun/Moon so they look naturally hidden.
+  */
 
-        <div class="weather-cloud"></div>
+  const celestial = isDay
+    ? `<div class="weather-sun celestial-body">
+         <div class="sun-rays"></div>
+         <div class="sun-core"></div>
+       </div>`
+    : `<div class="weather-moon celestial-body">
+         <div class="moon-surface"></div>
+         <div class="moon-crater crater-one"></div>
+         <div class="moon-crater crater-two"></div>
+         <div class="moon-crater crater-three"></div>
+       </div>`;
+
+  let weatherLayer = "";
+
+
+  /* PARTLY CLOUDY */
+
+  if(type === "partly"){
+
+    weatherLayer = `
+      <div class="cloud weather-cloud">
+        <div class="cloud-shadow"></div>
       </div>
     `;
+
   }
 
-  if (type === "rain" || type === "storm") {
-    return `
-      <div class="weather-scene">
 
-        <div class="weather-cloud"></div>
+  /* CLOUDY */
 
-        <div class="weather-rain">
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-        </div>
+  else if(type === "cloudy"){
 
+    weatherLayer = `
+      <div class="cloud weather-cloud">
+        <div class="cloud-shadow"></div>
       </div>
     `;
+
   }
 
-  if (type === "snow") {
-    return `
-      <div class="weather-scene">
 
-        <div class="weather-cloud"></div>
+  /* FOG */
 
-        <div class="weather-snow">
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-        </div>
+  else if(type === "fog"){
 
+    weatherLayer = `
+      <div class="cloud weather-cloud fog-cloud">
+        <div class="cloud-shadow"></div>
       </div>
     `;
+
   }
 
-  if (type === "fog") {
-    return `
-      <div class="weather-scene">
-        <div class="weather-cloud"></div>
 
-        <div class="fog-lines">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+  /* RAIN / THUNDERSTORM */
+
+  else if(
+    type === "rain" ||
+    type === "storm"
+  ){
+
+    weatherLayer = `
+      <div class="cloud weather-cloud">
+        <div class="cloud-shadow"></div>
+      </div>
+
+      <div class="weather-rain">
+        <i></i>
+        <i></i>
+        <i></i>
       </div>
     `;
+
   }
+
+
+  /* SNOW */
+
+  else if(type === "snow"){
+
+    weatherLayer = `
+      <div class="cloud weather-cloud">
+        <div class="cloud-shadow"></div>
+      </div>
+
+      <div class="weather-snow">
+        • • •
+      </div>
+    `;
+
+  }
+
 
   return `
-    <div class="weather-scene">
-      <div class="weather-cloud"></div>
+    <div class="weather-scene ${isDay ? "day-scene" : "night-scene"}">
+
+      ${celestial}
+
+      ${weatherLayer}
+
     </div>
   `;
 }
-
-
 /* =====================================================
    CURRENT RAIN CHANCE
    ===================================================== */
@@ -2866,19 +2899,36 @@ function addChatMessage(
     return;
 
   const div =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   div.className =
     `chat-message ${type}`;
 
-  div.innerHTML =
-    message;
+  const avatar =
+    type === "bot"
+      ? "W"
+      : "You";
 
-  els.chatBox.appendChild(
-    div
-  );
+  let content;
+
+  if (type === "bot") {
+    // Assistant response may contain <b> formatting
+    content = message;
+  } else {
+    // User text must remain safe
+    content = escapeHTML(message);
+  }
+
+  div.innerHTML = `
+    <div class="avatar">${avatar}</div>
+
+    <div class="chat-bubble">
+      <p>${content}</p>
+      <small>Just now</small>
+    </div>
+  `;
+
+  els.chatBox.appendChild(div);
 
   els.chatBox.scrollTop =
     els.chatBox.scrollHeight;
@@ -2901,17 +2951,14 @@ if (els.chatForm) {
       if (!question)
         return;
 
-
       addChatMessage(
-        escapeHTML(question),
+        question,
         "user"
       );
-
 
       if (els.chatInput) {
         els.chatInput.value = "";
       }
-
 
       setTimeout(() => {
 
@@ -2924,7 +2971,6 @@ if (els.chatForm) {
     }
   );
 }
-
 
 /* =====================================================
    QUICK CHAT BUTTONS
